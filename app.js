@@ -1,6 +1,8 @@
-// const dino = JSON.stringify(dino);
-
-// Create Dino Constructor
+/**
+ * @description Represents a dino constructor function
+ * @constructor
+ * @param {Object} dinoData - Dinosaur object containing Dinosaurs facts
+ */
 function Dinosaur(dinoData) {
   this.species = dinoData.species;
   this.weight = dinoData.weight;
@@ -9,13 +11,12 @@ function Dinosaur(dinoData) {
   this.where = dinoData.where;
   this.when = dinoData.when;
   this.fact = dinoData.fact;
-
-  // this.printFact = function () {
-  //   console.log("Hello I'am " + this.species);
-  // };
 }
 
-// Create Dino Objects
+/**
+ * @description The dinosaur data in object format
+ * @returns An array of dinosaur objects (plus a pigeon)
+ */
 const dinos = [
   {
     species: 'Triceratops',
@@ -91,8 +92,9 @@ const dinos = [
   },
 ];
 
-// Create Human Object
-
+/**
+ * @description Human data object
+ */
 let human = {
   userName: '',
   height: {
@@ -103,26 +105,20 @@ let human = {
   diet: 'Herbavor',
 };
 
-// Create Dino Compare Method 1
-// NOTE: Weight in JSON file is in lbs, height in inches.
-
+/**
+ * @description The dinosaur data in object format
+ * @param {Object} dino A single dinosaur object containing facts
+ * @returns An array with heightRatio, weightRatio and diet comparing dinosaurs with human input data
+ */
 let userInputValidated = Boolean(false);
-let comparison = {};
 function compareHumanWithDinosaur() {
   if (userInputValidated == true) {
-    // let result = {};
-    // function compareHeightAndWeight(dinoProperty, userProperty) {
-    //   result = dinos.map((dino) => {
-    //     return dino.dinoProperty / userProperty;
-    //   });
-    // }
-    // result.heightRatio = compareHeightAndWeight(height, human.height.inches);
-    // result.weightRatio = compareHeightAndWeight(weight, human.weight);
-    // console.log(result, 'RESULT');
-
-    (function compareHeight(humanHeight) {
-      comparison.heightRatio = dinos.map((dino) => {
-        const heightRatio = dino.height / humanHeight;
+    /**
+     * @description comparison property for Dinosaur object constructor
+     */
+    (comparison = {
+      heightRatio: dinos.map((dino) => {
+        const heightRatio = dino.height / human.height.inches;
         if (heightRatio === 1) {
           return `You have the same height!`;
         } else if (heightRatio < 1) {
@@ -134,13 +130,10 @@ function compareHumanWithDinosaur() {
             1
           )} times bigger then you!`;
         }
-      });
-    })(human.height.inches);
-    console.log(comparison.heightRatio, 'COMPARE Height');
+      }),
 
-    (function compareWeight(humanWeight) {
-      comparison.weightRatio = dinos.map((dino) => {
-        const weightRatio = dino.weight / humanWeight;
+      weightRatio: dinos.map((dino) => {
+        const weightRatio = dino.weight / human.weight;
         if (weightRatio === 1) {
           return `You have the same weight!`;
         } else if (weightRatio < 1) {
@@ -152,35 +145,37 @@ function compareHumanWithDinosaur() {
             1
           )} times heavier then you!`;
         }
-        // return dino.weight / humanWeight;
-      });
-    })(human.weight);
-    console.log(comparison.weightRatio, 'COMPARE Weight');
+      }),
 
-    (function compareDiet() {
-      const dietArray = dinos.map((dino, index) => {
-        if (dino.diet == human.diet) {
-          {
-            return `You are both ${human.diet}`;
-          }
+      dietCompare: dinos.map((dino) => {
+        if (dino.diet === human.diet) {
+          return `You are both ${human.diet}`;
         } else {
           return `The Dino ist ${dino.diet}, and you are ${human.diet}`;
         }
+      }),
+    }),
+      (Dinosaur.prototype = comparison);
+
+    dinos.forEach(function (dino) {
+      comparison = new Dinosaur({
+        species: dino.species,
+        weight: dino.weight,
+        height: dino.height,
+        diet: dino.diet,
+        where: dino.where,
+        when: dino.when,
+        fact: '',
       });
-      if (dietArray != undefined) {
-        console.log(dietArray, 'ARRAy');
-        comparison.diet = dietArray;
-      }
-    })();
-    console.log(comparison, 'COMPARISON');
+    });
     generateTitle();
   }
 }
-
-// Use IIFE to get human data from form
-
+/**
+ * @description On button click form data will be checked in the function formValidator()
+ *  @returns data from html input fields
+ */
 const button = document.getElementById('btn');
-
 button.addEventListener(
   'click',
   (function humanInputData() {
@@ -195,6 +190,10 @@ button.addEventListener(
   })()
 );
 
+/**
+ * @description Function formValidator checks, if input fields are not empty and if not it's forward to next function compareHumanWithDinosaur()
+ * @returns Validation message to user
+ */
 let validationMessage = document.getElementById('validation-message');
 function formValidator() {
   switch (human != null) {
@@ -222,7 +221,11 @@ function formValidator() {
   return validationMessage;
 }
 
-// Generate Tiles for each Dino in Array
+/**
+ * @description Generate tiles with randomly mixed facts for each tile in Array (except human and pigeon tile)
+ * @param {number} max - number is dinos array length
+ * @returns validation message to user
+ */
 
 let mixedTiles = [];
 function generateTitle() {
@@ -243,6 +246,7 @@ function generateTitle() {
         fact: '',
       });
 
+      console.log(comparison, 'COMP 264');
       switch (getRandomInt(7)) {
         case 0:
           dinoTile.fact = comparison.heightRatio[index];
@@ -251,7 +255,7 @@ function generateTitle() {
           dinoTile.fact = comparison.weightRatio[index];
           break;
         case 2:
-          dinoTile.fact = comparison.diet[index];
+          dinoTile.fact = comparison.dietCompare[index];
           break;
         case 3:
           dinoTile.fact = dino.fact;
@@ -270,7 +274,6 @@ function generateTitle() {
       }
       return dinoTile;
     });
-  console.log(dinoTiles, 'TILE');
 
   const [firstKey, firstValue] = Object.entries(human)[0];
   const user = {};
@@ -288,8 +291,9 @@ function generateTitle() {
   addTilesToDOM();
 }
 
-// Add tiles to DOM
-
+/**
+ * @description get id name from DOM and add tiles with facts and pictures in div/img/p container/ html elements to th DOM
+ */
 function addTilesToDOM() {
   const grid = document.getElementById('grid');
 
@@ -329,11 +333,10 @@ function addTilesToDOM() {
   });
 }
 
-// Remove form from screen
-
+/**
+ * @description get id name from DOM and on button click, html form disappear
+ */
 function disAppearForm() {
   const formContainer = document.getElementById('dino-compare');
   formContainer.style.display = 'none';
 }
-
-// On button click, prepare and display infographic
