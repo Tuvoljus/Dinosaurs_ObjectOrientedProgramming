@@ -1,5 +1,3 @@
-// const dino = JSON.stringify(dino);
-
 // Create Dino Constructor
 function Dinosaur(dinoData) {
   this.species = dinoData.species;
@@ -9,7 +7,6 @@ function Dinosaur(dinoData) {
   this.where = dinoData.where;
   this.when = dinoData.when;
   this.fact = dinoData.fact;
-
   // this.printFact = function () {
   //   console.log("Hello I'am " + this.species);
   // };
@@ -107,7 +104,7 @@ let human = {
 // NOTE: Weight in JSON file is in lbs, height in inches.
 
 let userInputValidated = Boolean(false);
-let comparison = {};
+// let comparison;
 function compareHumanWithDinosaur() {
   if (userInputValidated == true) {
     // let result = {};
@@ -120,63 +117,77 @@ function compareHumanWithDinosaur() {
     // result.weightRatio = compareHeightAndWeight(weight, human.weight);
     // console.log(result, 'RESULT');
 
-    (function compareHeight(humanHeight) {
-      comparison.heightRatio = dinos.map((dino) => {
-        const heightRatio = dino.height / humanHeight;
-        if (heightRatio === 1) {
-          return `You have the same height!`;
-        } else if (heightRatio < 1) {
-          return `The ${dino.species} is ${heightRatio.toFixed(
-            1
-          )} times taller then you!`;
-        } else {
-          return `The ${dino.species} is ${heightRatio.toFixed(
-            1
-          )} times bigger then you!`;
-        }
-      });
-    })(human.height.inches);
-    console.log(comparison.heightRatio, 'COMPARE Height');
-
-    (function compareWeight(humanWeight) {
-      comparison.weightRatio = dinos.map((dino) => {
-        const weightRatio = dino.weight / humanWeight;
-        if (weightRatio === 1) {
-          return `You have the same weight!`;
-        } else if (weightRatio < 1) {
-          return `The ${dino.species} is ${weightRatio.toFixed(
-            1
-          )} times lighter then you!`;
-        } else {
-          return `The ${dino.species} is ${weightRatio.toFixed(
-            1
-          )} times heavier then you!`;
-        }
-        // return dino.weight / humanWeight;
-      });
-    })(human.weight);
-    console.log(comparison.weightRatio, 'COMPARE Weight');
-
-    (function compareDiet() {
-      const dietArray = dinos.map((dino, index) => {
-        if (dino.diet == human.diet) {
-          {
-            return `You are both ${human.diet}`;
+    (comparison = {
+      heightRatio:
+        // comparison.heightRatio =
+        dinos.map((dino) => {
+          const heightRatio = dino.height / human.height.inches;
+          if (heightRatio === 1) {
+            return `You have the same height!`;
+          } else if (heightRatio < 1) {
+            return `The ${dino.species} is ${heightRatio.toFixed(
+              1
+            )} times taller then you!`;
+          } else {
+            return `The ${dino.species} is ${heightRatio.toFixed(
+              1
+            )} times bigger then you!`;
           }
-        } else {
-          return `The Dino ist ${dino.diet}, and you are ${human.diet}`;
-        }
+        }),
+
+      weightRatio:
+        // comparison.weightRatio =
+        dinos.map((dino) => {
+          const weightRatio = dino.weight / human.weight;
+          if (weightRatio === 1) {
+            return `You have the same weight!`;
+          } else if (weightRatio < 1) {
+            return `The ${dino.species} is ${weightRatio.toFixed(
+              1
+            )} times lighter then you!`;
+          } else {
+            return `The ${dino.species} is ${weightRatio.toFixed(
+              1
+            )} times heavier then you!`;
+          }
+          // return dino.weight / humanWeight;
+        }),
+
+      dietCompare:
+        // const dietArray =
+        dinos.map((dino) => {
+          if (dino.diet === human.diet) {
+            return `You are both ${human.diet}`;
+          } else {
+            return `The Dino ist ${dino.diet}, and you are ${human.diet}`;
+          }
+        }),
+      // if (dietArray != undefined) {
+      //   console.log(dietArray, 'ARRAy');
+      //   return dietArray;
+      // }
+    }),
+      // TODO
+
+      (Dinosaur.prototype = comparison);
+
+    dinos.forEach(function (dino) {
+      comparison = new Dinosaur({
+        species: dino.species,
+        weight: dino.weight,
+        height: dino.height,
+        diet: dino.diet,
+        where: dino.where,
+        when: dino.when,
+        fact: '',
       });
-      if (dietArray != undefined) {
-        console.log(dietArray, 'ARRAy');
-        comparison.diet = dietArray;
-      }
-    })();
-    console.log(comparison, 'COMPARISON');
-    generateTitle();
+    });
+    console.log(comparison, 'COMP 192'), generateTitle();
   }
 }
 
+if (userInputValidated == true) {
+}
 // Use IIFE to get human data from form
 
 const button = document.getElementById('btn');
@@ -243,6 +254,7 @@ function generateTitle() {
         fact: '',
       });
 
+      console.log(comparison, 'COMP 264');
       switch (getRandomInt(7)) {
         case 0:
           dinoTile.fact = comparison.heightRatio[index];
@@ -251,7 +263,7 @@ function generateTitle() {
           dinoTile.fact = comparison.weightRatio[index];
           break;
         case 2:
-          dinoTile.fact = comparison.diet[index];
+          dinoTile.fact = comparison.dietCompare[index];
           break;
         case 3:
           dinoTile.fact = dino.fact;
