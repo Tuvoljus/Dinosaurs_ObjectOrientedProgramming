@@ -222,7 +222,7 @@ function formValidator() {
 }
 
 /**
- * @description Generate tiles with randomly mixed facts for each tile in Array (except human and pigeon tile)
+ * @description Generate tiles with randomly mixed facts for each tile in Array (except human and pigeon tile), human is in the center and pigeon at the end
  * @param {number} max - number is dinos array length
  * @returns validation message to user
  */
@@ -246,7 +246,6 @@ function generateTitle() {
         fact: '',
       });
 
-      console.log(comparison, 'COMP 264');
       switch (getRandomInt(7)) {
         case 0:
           dinoTile.fact = comparison.heightRatio[index];
@@ -292,7 +291,7 @@ function generateTitle() {
 }
 
 /**
- * @description get id name from DOM and add tiles with facts and pictures in div/img/p container/ html elements to th DOM
+ * @description get id name from DOM and add tiles with facts and pictures in div/img/p containers/ html elements to th DOM
  */
 function addTilesToDOM() {
   const grid = document.getElementById('grid');
@@ -329,14 +328,28 @@ function addTilesToDOM() {
     div.appendChild(p);
 
     grid.appendChild(div);
-    disAppearForm();
+    disAppearForm('none');
   });
+}
+/**
+ * @description get id name from DOM and on button click, html form disappear
+ * @param displayStatus - its the .style.display status 'none' or 'block'
+ */
+function disAppearForm(displayStatus) {
+  const formContainer = document.getElementById('dino-compare');
+  formContainer.style.display = displayStatus;
+  appearButton();
 }
 
 /**
- * @description get id name from DOM and on button click, html form disappear
+ * @description display the "Go back to form" button in der main container. On button click dinosaurs grid (get empty) and button disappears
  */
-function disAppearForm() {
-  const formContainer = document.getElementById('dino-compare');
-  formContainer.style.display = 'none';
+function appearButton() {
+  const buttonAppearForm = document.getElementById('go-to-form');
+  buttonAppearForm.style.display = 'block';
+  buttonAppearForm.addEventListener('click', () => {
+    disAppearForm('block') &
+      (document.getElementById('grid').innerHTML = '') &
+      (buttonAppearForm.style.display = 'none');
+  });
 }
