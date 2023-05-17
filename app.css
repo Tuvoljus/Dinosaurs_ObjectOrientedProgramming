@@ -177,6 +177,11 @@ select {
   display: none;
 }
 
+/* validation-messages */
+#validation-message {
+  color: red;
+}
+
 /* Footer */
 .fine-print {
   display: block;
